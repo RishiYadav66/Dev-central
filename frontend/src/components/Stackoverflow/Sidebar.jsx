@@ -10,13 +10,13 @@ const Sidebar = () => {
         <div className="sidebar-options">
           <div className="sidebar-option">
             <PublicIcon />
-            <Link>Dev Central</Link>
+            <Link to="/">Dev Central</Link>
           </div>
           <div style={{ marginLeft: "25px" }} className="sidebar-option">
-            <Link>Tags</Link>
+            <Link to="/">Tags</Link>
           </div>
           <div style={{ marginLeft: "25px" }} className="sidebar-option">
-            <Link>Users</Link>
+            <Link to="/">Users</Link>
           </div>
         </div>
       </div>

@@ -19,10 +19,12 @@
     "axios": "^1.4.0",
     "firebase": "^9.18.0",
     "html-react-parser": "^3.0.12",
+    "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.9.0",
+    "react-syntax-highlighter": "^15.5.0",
     "react-tag-input-component": "^1.1.3"
   },
   "devDependencies": {

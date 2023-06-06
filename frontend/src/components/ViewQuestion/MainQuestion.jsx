@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Select } from "@mui/material";
-import { Link } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./style.css";
 import "../Stackoverflow/index.css";
 import { Bookmark, History } from "@mui/icons-material";
@@ -11,6 +13,12 @@ import ReactHtmlParser from "html-react-parser";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 const MainQuestion = () => {
+  const location = useLocation();
+  let search = location.search;
+  const params = new URLSearchParams(search);
+  const id = params.get("q");
+  const nav = useNavigate();
+
   var toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
     ["blockquote", "code-block"],
@@ -31,20 +39,16 @@ const MainQuestion = () => {
     [{ font: [] }],
     [{ align: [] }],
 
-    ["clean"], // remove formatting button
+    ["clean"],
   ];
   Editor.modules = {
     syntax: false,
     toolbar: toolbarOptions,
     clipboard: {
-      // toggle to add extra line breaks when pasting HTML:
       matchVisual: false,
     },
   };
-  /*
-   * Quill editor formats
-   * See https://quilljs.com/docs/formats/
-   */
+
   Editor.formats = [
     "header",
     "font",
@@ -65,14 +69,25 @@ const MainQuestion = () => {
   const [show, setshow] = useState(false);
 
   const [questionData, setQuestionData] = useState();
-  let search = window.location.search;
-  const params = new URLSearchParams(search);
-  const id = params.get("q");
 
   const user = useSelector(selectUser);
   const [answer, setanswer] = useState("");
   const handleQuill = (value) => {
     setanswer(value);
+  };
+
+  const deletequestion = async () => {
+    // console.alert("Are you sure you want to delete");
+    await axios
+      .delete(`/api/question/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        getUpdatedAnswers();
+        nav("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const [comment, setcomment] = useState("");
@@ -174,6 +189,16 @@ const MainQuestion = () => {
                 Viewed <span>43 times</span>
               </p>
             </div>
+            <div className="info">
+              {user && user.uid === questionData?.user?.uid && (
+                <Link to={`/update-question?q=${id}`}>
+                  <EditIcon style={{ paddingRight: "5px" }} />
+                </Link>
+              )}
+              {user && user.uid === questionData?.user?.uid && (
+                <DeleteIcon onClick={deletequestion} />
+              )}
+            </div>
           </div>
         </div>
         <div className="all-questions">
@@ -190,7 +215,9 @@ const MainQuestion = () => {
             <div className="question-answer">
               {ReactHtmlParser(String(questionData?.body))}
               <div className="author">
-                <small>asked "TimeStamp"</small>
+                <small>
+                  {new Date(questionData?.created_at).toLocaleString()}
+                </small>
                 <div className="auth-details">
                   <Avatar src={questionData?.user?.photo} />
                   <p>

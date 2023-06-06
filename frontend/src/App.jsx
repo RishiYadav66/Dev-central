@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 
 import { useEffect } from "react";
 import { auth } from "./firebase";
+import QuestionEdit from "./components/Add-Question/QuestionEdit";
 function App() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route element={<PrivateRoute />}>
             <Route path="/add-question" element={<Question />} />
+            <Route path="/update-question" element={<QuestionEdit />} />
             <Route path="/" element={<Stackoverflow />} />
             <Route path="/view-question" element={<ViewQuestion />} />
           </Route>

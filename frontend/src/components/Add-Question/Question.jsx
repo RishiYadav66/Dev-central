@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
+import Editor from "react-quill/lib";
 import "react-quill/dist/quill.snow.css";
 import { TagsInput } from "react-tag-input-component";
 import "./question.css";
@@ -10,58 +11,52 @@ import { selectUser } from "../../features/userSlice";
 import axios from "axios";
 
 function Question() {
-  // const user = useSelector(selectUser);
-  // var toolbarOptions = [
-  //   ["bold", "italic", "underline", "strike"], // toggled buttons
-  //   ["blockquote", "code-block"],
+  var toolbarOptions = [
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
 
-  //   [{ header: 1 }, { header: 2 }], // custom button values
-  //   [{ list: "ordered" }, { list: "bullet" }],
-  //   [{ script: "sub" }, { script: "super" }], // superscript/subscript
-  //   [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-  //   [{ direction: "rtl" }], // text direction
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
 
-  //   [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-  //   [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
-  //   [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-  //   [{ font: [] }],
-  //   [{ align: [] }],
+    [
+      { color: ["#ff0000", "#00ff00", "#0000ff", "#220055"] },
+      { background: [] },
+    ], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
 
-  //   ["clean"], // remove formatting button
-  // ];
-  // Editor.modules = {
-  //   syntax: false,
-  //   toolbar: toolbarOptions,
-  //   clipboard: {
-  //     // toggle to add extra line breaks when pasting HTML:
-  //     matchVisual: false,
-  //   },
-  // };
-  /*
-   * Quill editor formats
-   * See https://quilljs.com/docs/formats/
-   */
-  // Editor.formats = [
-  //   "header",
-  //   "font",
-  //   "size",
-  //   "bold",
-  //   "italic",
-  //   "underline",
-  //   "strike",
-  //   "blockquote",
-  //   "list",
-  //   "bullet",
-  //   "indent",
-  //   "link",
-  //   "image",
-  //   "video",
-  // ];
+    ["clean"],
+  ];
+  Editor.modules = {
+    syntax: false,
+    toolbar: toolbarOptions,
+    clipboard: {
+      matchVisual: false,
+    },
+  };
 
-  /*
-   * PropType validation
-   */
+  Editor.formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+  ];
   const user = useSelector(selectUser);
 
   const [loading, setloading] = useState(false);
@@ -128,10 +123,11 @@ function Question() {
                   Include all the information someone would need to answer your
                   question
                 </small>
+
                 <ReactQuill
+                  modules={Editor.modules}
                   value={body}
                   onChange={handleQuill}
-                  // modules={Editor.modules}
                   className="react-quill"
                   theme="snow"
                 />

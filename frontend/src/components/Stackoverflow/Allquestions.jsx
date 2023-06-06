@@ -4,6 +4,7 @@ import "./index.css";
 import { Avatar } from "@mui/material";
 import ReactHtmlParser from "html-react-parser";
 const Allquestions = ({ question }) => {
+  const date = new Date(question?.created_at).toLocaleString();
   const tags = JSON.parse(question.tags);
   return (
     <div className="all-questions">
@@ -44,7 +45,7 @@ const Allquestions = ({ question }) => {
             </div>
           </div>
           <div className="author">
-            <small>{new Date(question?.created_at).toLocaleString()}</small>
+            <small>{date}</small>
             <div className="author-details">
               <Avatar src={question?.user?.photo} />
               <p>
